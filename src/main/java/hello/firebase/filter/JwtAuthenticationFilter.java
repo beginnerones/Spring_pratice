@@ -25,6 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -34,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final JwtService jwtService;
     private final TestService testService;
-    private final ConcurrentHashMap<String, Bucket> rateLimiters;
+    private final Map<String, Bucket> rateLimiters=new ConcurrentHashMap<>();
     private final RateLimiterConfig rateLimiter;
 
     private static final List<AntPathRequestMatcher> saveMat=List.of(new AntPathRequestMatcher("/user/save","POST"),
@@ -42,11 +43,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Autowired
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, JwtService jwtService, TestService testService, ConcurrentHashMap<String, Bucket> rateLimiters, RateLimiterConfig rateLimiter) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, JwtService jwtService, TestService testService, RateLimiterConfig rateLimiter) {
         this.jwtUtil = jwtUtil;
         this.jwtService = jwtService;
         this.testService = testService;
-        this.rateLimiters = rateLimiters;
         this.rateLimiter = rateLimiter;
     }
 
@@ -69,6 +69,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     Claims claims = jwtService.getClaims(token);
                     String userId = claims.getSubject();
                     log.info("userId:{}",userId);
+                    Bucket bucket = rateLimiters.computeIfAbsent(userId, key -> rateLimiter.bucket()); //있으면 버킷반환 없으면 생성
+                    if(!(bucket.tryConsume(1))){
+                        throw new NotExistException("요청 토큰 부족");
+                    }
+                    log.info("bucket:{}",bucket.getAvailableTokens());
                     setAuthenticationContext(userId);
                     filterChain.doFilter(request, response);
                     return;
@@ -77,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
 
             }
-            //restapi
+            //이후 폐기.
 //            String refreshToken = request.getHeader("Refresh");
 //            if (refreshToken != null && refreshToken.startsWith(("Bearer "))) {
 //                String token = refreshToken.substring(7);

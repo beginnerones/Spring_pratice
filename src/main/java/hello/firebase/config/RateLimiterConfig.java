@@ -2,7 +2,6 @@ package hello.firebase.config;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.Refill;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class RateLimiterConfig {
     @Bean
     public Bucket bucket() {
         return Bucket.builder()
-                .addLimit(limit-> limit.capacity(50).refillGreedy(50, Duration.ofMinutes(1)))
+                .addLimit(limit-> limit.capacity(10).refillGreedy(10, Duration.ofMinutes(1)))
                 .build(); //최대 용량 50,1분마다 50개 지금.
 
     }
