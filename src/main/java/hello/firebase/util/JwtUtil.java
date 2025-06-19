@@ -1,4 +1,4 @@
-package hello.firebase.other;
+package hello.firebase.util;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

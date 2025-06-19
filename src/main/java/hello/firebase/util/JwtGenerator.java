@@ -1,4 +1,4 @@
-package hello.firebase.other;
+package hello.firebase.util;
 
 import hello.firebase.domain.User;
 import io.jsonwebtoken.Header;

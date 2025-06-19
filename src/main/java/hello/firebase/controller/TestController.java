@@ -35,7 +35,7 @@ public class TestController {
     }
 
     @PostMapping("/user/save")
-    public ResponseEntity<?> saveUser(@RequestBody UserDto userDto, HttpServletResponse response){
+    public ResponseEntity<?> saveUser(@RequestBody UserDto userDto, HttpServletResponse response)throws Exception {
 
         User user = testService.saveUser(userDto);
         String accessToken = jwtService.generateAccessToken(user);
@@ -48,9 +48,6 @@ public class TestController {
                 "accesToken",accessToken,
                 "refreshToken",refreshToken
         ));
-
-
-
     }
 
     @PostMapping("/user/reissue")

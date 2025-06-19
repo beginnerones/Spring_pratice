@@ -1,4 +1,4 @@
-package hello.firebase.other;
+package hello.firebase.util;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

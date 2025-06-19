@@ -3,8 +3,6 @@ package hello.firebase.config;
 import hello.firebase.exception.resolver.MyHandlerExceptionResolver;
 import hello.firebase.exception.resolver.UserHandlerExceptionResolver;
 import hello.firebase.intercepter.LogInterceptor;
-import hello.firebase.intercepter.LoginCheckInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -32,10 +30,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**") //이 하위는 전부 포함
         .excludePathPatterns("/css/**","/*.ico,","/error");
 
-        registry.addInterceptor(new LoginCheckInterceptor())
-                .order(2)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/css/**","/*.ico,","/error");
+//        registry.addInterceptor(new LoginCheckInterceptor())
+//                .order(2)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/css/**","/*.ico,","/error");
         //이거는 제외한다.
     }
 

@@ -3,6 +3,7 @@ package hello.firebase.service;
 import hello.firebase.dao.TestDto;
 import hello.firebase.domain.User;
 import hello.firebase.dto.UserDto;
+import hello.firebase.util.AESUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,20 @@ import java.util.Optional;
 public class TestService {
 
     TestDto testDto;
+    private final AESUtil aesUtil;
 
-    public TestService(TestDto testDto) {
+    public TestService(TestDto testDto, AESUtil aesUtil) {
         this.testDto = testDto;
+        this.aesUtil = aesUtil;
     }
 
     @Transactional
-    public User saveUser(UserDto userDto) {
+    public User saveUser(UserDto userDto)throws Exception {
         User user = new User();
         user.setUser(userDto.getUser());
         user.setAge(userDto.getAge());
-        user.setEmail(userDto.getEmail());
+        String secu_email=aesUtil.encrypt(userDto.getEmail());
+        user.setEmail(secu_email);
         testDto.save(user);
         return user;
     }
