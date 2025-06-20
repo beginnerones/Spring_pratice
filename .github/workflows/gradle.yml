@@ -33,8 +33,12 @@ jobs:
 
     # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+
+
     - name: Build Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1 
+      uses: gradle/gradle-build-action@v3
       with:  #액션에 인자를 전달.
         arguments: clean bootJar 
         cache-read-only: false
