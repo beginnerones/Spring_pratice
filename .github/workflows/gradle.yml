@@ -88,7 +88,10 @@ jobs:
         #run: sudo docker pull ${{secrets.DOCKER_USERNAME}}/testone:latest
 
       - name: docker compose
-        run: sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d --build
+        run: |
+          sudo docker pull ${{secrets.DOCKER_USERNAME}}/testone:latest 
+          cd /home/ubuntu
+          sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d --build
 
       - name: Change nginx upstram
         run: |
