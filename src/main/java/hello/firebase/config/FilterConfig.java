@@ -29,6 +29,7 @@ public class FilterConfig {
                         .requestMatchers("/user/save").permitAll()
                         .requestMatchers("/user/reissue").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/env").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)

@@ -39,7 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RateLimiterConfig rateLimiter;
 
     private static final List<AntPathRequestMatcher> saveMat=List.of(new AntPathRequestMatcher("/user/save","POST"),
-            new AntPathRequestMatcher("/user/reissue","POST"));
+            new AntPathRequestMatcher("/user/reissue","POST"),
+            new AntPathRequestMatcher("/env","GET"));
 
 
     @Autowired

@@ -9,6 +9,7 @@ import hello.firebase.service.TestService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,8 @@ public class TestController {
 
     public TestService testService;
     public final JwtService jwtService;
+    @Value("${server.env}")
+    private String env;
 
     @Autowired
     public TestController(TestService testService, JwtService jwtService) {
@@ -55,6 +58,11 @@ public class TestController {
         log.info("reissueUser");
         TokenDto tokenDto=jwtService.regenerateToken(refreshToken);
         return ResponseEntity.ok().body(tokenDto);
+    }
+
+    @GetMapping("/env")
+    public ResponseEntity<?> getEnv(){
+        return ResponseEntity.ok(env);
     }
 
 }
